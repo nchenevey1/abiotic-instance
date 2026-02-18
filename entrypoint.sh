@@ -43,9 +43,13 @@ SANDBOX_INI_PATH="${SANDBOX_INI_PATH:-}"
 
 # ---------------- helpers ----------------
 do_update() {
-  echo "Running SteamCMD update..."
+  echo "Running SteamCMD (Windows) update..."
 
-  local args=( +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir "$INSTALL_DIR" +app_update 2857200 )
+  # Convert Linux path to Wine Z: drive path
+  # e.g., /home/steam/abiotic -> Z:\home\steam\abiotic
+  local win_install_dir="Z:${INSTALL_DIR//\//\\}"
+  
+  local args=( +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir "$win_install_dir" +app_update 2857200 )
   [ "$VALIDATE" = "1" ] && args+=( validate )
   args+=( +quit )
 
@@ -53,7 +57,10 @@ do_update() {
   for attempt in 1 2 3; do
     echo "Update attempt #$attempt..."
     set +e
-    "$STEAMCMD_DIR/steamcmd.sh" "${args[@]}" 2>&1 | tee /tmp/steamcmd_attempt.log
+    
+    # Run Windows SteamCMD via Wine
+    "$WINE_FOR_SERVER" "$STEAMCMD_DIR/steamcmd.exe" "${args[@]}" 2>&1 | tee /tmp/steamcmd_attempt.log
+
     local rc=${PIPESTATUS[0]}
     set -e
 
@@ -139,4 +146,3 @@ case "$MODE" in
     launch_server
     ;;
 esac
-

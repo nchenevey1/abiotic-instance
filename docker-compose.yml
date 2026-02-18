@@ -3,7 +3,7 @@ services:
     # Use 'host' network mode for best performance and simple port management
     # Ensure Oracle Cloud Security List allows Ingress UDP/TCP on 7777 and 27015
     network_mode: "host"
-    user: "0:0"
+    # user: "0:0"
     build: .
     container_name: abiotic-factor
     restart: unless-stopped

@@ -67,7 +67,7 @@ async def up(interaction: discord.Interaction):
     if not is_authorized(interaction):
         return await interaction.response.send_message("Unauthorized", ephemeral=True)
     
-    await interaction.response.defer(ephemeral=False)
+    await interaction.response.defer(ephemeral=True)
     rc, out = await run_shell(f"{COMPOSE_CMD} up -d", SERVER_DIR)
     
     await interaction.followup.send(f"**Up Command** (Exit: {rc})\n```\n{out[-1900:]}\n```")
@@ -77,7 +77,7 @@ async def down(interaction: discord.Interaction):
     if not is_authorized(interaction):
         return await interaction.response.send_message("Unauthorized", ephemeral=True)
     
-    await interaction.response.defer(ephemeral=False)
+    await interaction.response.defer(ephemeral=True)
     rc, out = await run_shell(f"{COMPOSE_CMD} down", SERVER_DIR)
     await interaction.followup.send(f"**Down Command** (Exit: {rc})\n```\n{out[-1900:]}\n```")
 
@@ -86,7 +86,7 @@ async def restart(interaction: discord.Interaction):
     if not is_authorized(interaction):
         return await interaction.response.send_message("Unauthorized", ephemeral=True)
 
-    await interaction.response.defer(ephemeral=False)
+    await interaction.response.defer(ephemeral=True)
     rc, out = await run_shell(f"{COMPOSE_CMD} restart", SERVER_DIR)
     await interaction.followup.send(f"**Restart Command** (Exit: {rc})\n```\n{out[-1900:]}\n```")
 

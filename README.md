@@ -9,26 +9,18 @@ This project allows you to run an **Abiotic Factor** dedicated server on an Orac
 - **System Tools** (Git, Docker).
 
 ### System Setup (Oracle Linux)
-Run these commands on your instance to install the necessary tools:
+Run these commands to install Git and Docker:
 ```bash
 # Install Git
 sudo dnf install -y git
 
-# Install Docker
+# Install Docker & Docker Compose Plugin
 sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io
-
-# Install Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-aarch64" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # Start Docker and enable it on boot
 sudo systemctl start docker
 sudo systemctl enable docker
-
-# (Optional) Allow running docker without sudo
-sudo usermod -aG docker $USER
-# You will need to logout and log back in for this to take effect
 ```
 
 ## Installation
@@ -36,8 +28,8 @@ sudo usermod -aG docker $USER
 ### 1. Clone the Files
 SSH into your Oracle Cloud instance:
 ```bash
-git clone <your-repo-url> abiotic-server
-cd abiotic-server
+git clone https://github.com/nchenevey1/abiotic-instance.git abiotic-instance
+cd abiotic-instance
 ```
 
 ### 2. Configure the Server
@@ -79,6 +71,23 @@ Navigate to `bot_files/` and create your config:
 cd bot_files
 nano .env
 ```
+
+Paste in the following:
+
+```
+DISCORD_TOKEN=[Paste Token Here]
+
+# Path to the server directory.
+# IMPORTANT: This must match the HOST path if using docker-compose (e.g., /home/opc/abiotic-server)
+SERVER_DIR=/home/opc/abiotic-instance
+
+COMPOSE=docker-compose
+
+ALLOWED_USER_IDS=[YourDiscordUserIDs]
+
+GUILD_ID=
+```
+
 - **DISCORD_TOKEN**: Your bot token.
 - **ALLOWED_USER_IDS**: Comma-separated Discord User IDs (for security).
 - **SERVER_DIR**: Set this to the **full path** of your project on the host (e.g., `/home/opc/abiotic-server`).
