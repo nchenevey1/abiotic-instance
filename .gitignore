@@ -1,0 +1,21 @@
+# Server Data
+data/
+server/
+steam/
+backups/
+steamcmd_win/
+
+# Logs & Temp
+*.log
+*.tmp
+.DS_Store
+
+# Docker
+.env
+
+# Python / Bot
+__pycache__/
+*.py[cod]
+venv/
+.pytest_cache/
+bot/.env
